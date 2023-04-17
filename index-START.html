@@ -97,7 +97,23 @@
 
 <script>
 
-const checkBoxes = document.querySelectorAll('.inbox input[type="checkbox"]')
+//checkboxes is a nodelist of the checkboxes on the DOM
+const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]')
+//checkboxes[0].checked = true; - .checked will be used to toggle the 'in-between' checkboxes
+
+for (const checkbox of checkboxes) {
+  checkbox.addEventListener('click', shiftCheckBoxes);
+}
+
+//this adds id attributes to the check boxes, which will be used to tell whether there are boxes in between that should be checked
+for (let i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].setAttribute('id', i);
+}
+
+function shiftCheckBoxes(e) {
+  console.log(`The shift key is pressed: ${e.shiftKey}`)
+  console.log(e.target.id)
+}
 
 </script>
 </body>
