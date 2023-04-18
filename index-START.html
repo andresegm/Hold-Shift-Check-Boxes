@@ -101,18 +101,43 @@
 const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]')
 //checkboxes[0].checked = true; - .checked will be used to toggle the 'in-between' checkboxes
 
-for (const checkbox of checkboxes) {
-  checkbox.addEventListener('click', shiftCheckBoxes);
-}
-
 //this adds id attributes to the check boxes, which will be used to tell whether there are boxes in between that should be checked
 for (let i = 0; i < checkboxes.length; i++) {
   checkboxes[i].setAttribute('id', i);
 }
 
+for (const checkbox of checkboxes) {
+  checkbox.addEventListener('click', addToArr);
+  checkbox.addEventListener('click', shiftCheckBoxes);
+}
+
+//array containing last clicked checkbox
+const arrLastClicked = []
+
+//function add checkbox to array only if shift key is NOT pressed while clicked
+function addToArr(e) {
+  if (e.shiftKey) {
+    return;
+  } else {
+      arrLastClicked.pop();
+      arrLastClicked.push(e.target);
+  }   
+}
+
+//function only works if shift key is pressed - it will compare checkboxes ids and turn checked to true for all in-between checkboxes
 function shiftCheckBoxes(e) {
-  console.log(`The shift key is pressed: ${e.shiftKey}`)
-  console.log(e.target.id)
+  if (e.shiftKey) {
+    if (e.target.id > arrLastClicked[0].id) {
+      for (let i = e.target.id; i >= arrLastClicked[0].id; i--) {
+        checkboxes[i].checked = true;
+      } 
+    }
+    if (e.target.id < arrLastClicked[0].id) {
+      for (let i = e.target.id; i <= arrLastClicked[0].id; i++) {
+        checkboxes[i].checked = true;
+      } 
+    }
+  }
 }
 
 </script>
